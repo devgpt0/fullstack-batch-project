@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from app.auth.dtos.dtos import SignupRequest, LoginRequest, AuthResponse
-from app.auth.services.auth_service import AuthService
+from app.modules.auth.dtos.dtos import SignupRequest, LoginRequest, AuthResponse
+from app.modules.auth.services.auth_service import AuthService
 
 router = APIRouter()
 service = AuthService()
