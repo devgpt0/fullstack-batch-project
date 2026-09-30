@@ -33,3 +33,7 @@ class UserRepository:
         )
 
         return result.scalars().all()
+
+    async def get_all_users(self):
+        result = await self.session.execute(select(User))
+        return result.scalars().all()

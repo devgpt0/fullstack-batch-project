@@ -1,12 +1,17 @@
+
+from enum import Enum
 from pydantic import BaseModel
+
+class Role(str, Enum):
+    SELLER = "seller"
+    BUYER = "buyer"
 
 class SignupRequest(BaseModel):
     firstname: str
     lastname: str
     email: str
     password: str
-    role: str = "buyer"
-
+    role: Role = Role.BUYER
 class LoginRequest(BaseModel):
     email: str
     password: str
