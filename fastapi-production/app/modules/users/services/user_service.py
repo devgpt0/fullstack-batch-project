@@ -8,3 +8,10 @@ class UserService:
         async with AsyncSessionLocal() as session:
             repo = UserRepository(session)
             return await repo.get_all_users()
+
+
+
+    async def get_all_buyers(self):
+        async with AsyncSessionLocal() as session:
+            repo = UserRepository(session)
+            return await repo.get_all_buyers()
