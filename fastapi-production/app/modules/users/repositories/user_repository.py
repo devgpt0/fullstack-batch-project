@@ -15,3 +15,7 @@ class UserRepository:
         await self.session.commit()
         await self.session.refresh(user)
         return user
+    
+    async def get_all_users(self):
+        result = await self.session.execute(select(User))
+        return result.scalars().all()
