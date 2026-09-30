@@ -1,6 +1,7 @@
-from sqlalchemy import select
+from sqlalchemy import select,cast
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.modules.users.models.user import User
+from sqlalchemy.dialects.postgresql import ENUM
 
 class UserRepository:
     def __init__(self, session: AsyncSession):
@@ -15,3 +16,20 @@ class UserRepository:
         await self.session.commit()
         await self.session.refresh(user)
         return user
+
+    async def get_all_buyers(self):
+        result = await self.session.execute(
+            select(User).where(
+                User.role == cast(
+                    "buyer",
+                    ENUM(
+                        "buyer",
+                        "seller",
+                        name="user_role",
+                        create_type=False
+                    )
+                )
+            )
+        )
+
+        return result.scalars().all()
