@@ -16,5 +16,10 @@ if "sslmode=require" in DATABASE_URL:
     connect_args["ssl"].check_hostname = False
     connect_args["ssl"].verify_mode = ssl.CERT_NONE
 
-engine = create_async_engine(DATABASE_URL, echo=False, connect_args=connect_args)
-AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+engine = create_async_engine(DATABASE_URL, echo=False, connect_args=connect_args,pool_size=2, max_overflow=0)
+
+AsyncSessionLocal = sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
