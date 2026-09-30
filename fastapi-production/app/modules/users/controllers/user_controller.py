@@ -11,6 +11,7 @@ service = UserService()
 @router.get("/users", response_model=list[UserResponse])
 async def get_all_users():
     users = await service.get_all_users()
+    return users
 
 @router.get("/buyers", response_model=list[BuyerResponse])
 async def get_all_buyers():
