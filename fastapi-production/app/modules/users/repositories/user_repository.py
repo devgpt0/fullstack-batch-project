@@ -34,6 +34,23 @@ class UserRepository:
 
         return result.scalars().all()
 
+    async def get_all_sellers(self):
+        result = await self.session.execute(
+            select(User).where(
+                User.role == cast(
+                    "seller",
+                    ENUM(
+                        "buyer",
+                        "seller",
+                        name="user_role",
+                        create_type=False
+                    )
+                )
+            )
+        )
+
+        return result.scalars().all()
+    
     async def get_all_users(self):
         result = await self.session.execute(select(User))
         return result.scalars().all()
