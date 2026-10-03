@@ -1,5 +1,6 @@
 import bcrypt
 from app.core.token_service import TokenService
+from app.core.email_service import send_email
 
 import os
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,14 +29,23 @@ class AuthService:
             existing = await repo.get_by_email(data.email)
             if existing:
                 raise ValueError("Email exists")
-            user = User(
-                firstname=data.firstname,
-                lastname=data.lastname,
-                email=data.email,
-                role=data.role,
-                hashed_password=self._hash_pw(data.password)
-            )
-            return await repo.create(user)
+        user = User(
+        firstname=data.firstname,
+        lastname=data.lastname,
+        email=data.email,
+        role=data.role,
+        hashed_password=self._hash_pw(data.password)
+)
+
+        user = await repo.create(user)
+
+        await send_email(
+        recipient=data.email,
+        subject="Welcome to E-Commerce",
+        body=f"Hello {data.firstname},\n\nYour account has been successfully created."
+)
+
+        return user
 
     async def authenticate(self, email: str, password: str) -> User:
         async with AsyncSessionLocal() as session:
